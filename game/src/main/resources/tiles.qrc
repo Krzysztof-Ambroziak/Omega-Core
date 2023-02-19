@@ -1,0 +1,8 @@
+<RCC>
+    <qresource prefix="/tiles/images">
+        <file alias="background-tile.png">tiles/background-tile.png</file>
+    </qresource>
+    <qresource prefix="/tiles/xml">
+        <file alias="background-tile.xml">tiles/background-tile.xml</file>
+    </qresource>
+</RCC>
