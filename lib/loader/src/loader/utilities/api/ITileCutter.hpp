@@ -7,7 +7,7 @@ Copyright (c) 2023 Krzysztof Ambroziak
 
 #include <QImage>
 
-#include "../../Definitions.hpp"
+#include "../../../../include/Commons.hpp"
 
 namespace ld {
 class ITileCutter {

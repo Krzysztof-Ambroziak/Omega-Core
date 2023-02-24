@@ -1,0 +1,5 @@
+<RCC>
+    <qresource prefix="/">
+        <file>maps/start-map.xml</file>
+    </qresource>
+</RCC>

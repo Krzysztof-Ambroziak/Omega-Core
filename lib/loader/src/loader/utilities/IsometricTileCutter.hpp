@@ -6,6 +6,7 @@ Copyright (c) 2023 Krzysztof Ambroziak
 #define LD_ISOMETRICTILECUTTER_HPP
 
 #include "TileCutterAdapter.hpp"
+#include "../Definitions.hpp"
 
 namespace ld {
 class IsometricTileCutter : public TileCutterAdapter {

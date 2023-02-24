@@ -3,11 +3,7 @@ Copyright (c) 2023 Krzysztof Ambroziak
 */
 
 #include "../../include/loader/TileSheet.hpp"
-
-void setPBool(bool var, bool* pointer) {
-    if(pointer != nullptr)
-        *pointer = var;
-}
+#include "utilities/PrivateHelpers.hpp"
 
 ld::TileSheet::TileSheet(const QString& tileNamespace, ld::TileType tileType) :
         m_sheetNamespace(tileNamespace),
@@ -18,11 +14,11 @@ void ld::TileSheet::addImage(const QImage& image, const QString& name, bool* rep
     const int index = binarySearchIndex(name);
     
     if(index < end && name == m_images[index].name) {
-        setPBool(true, repleace);
+        ld::setPVar<>(true, repleace);
         m_images[index] = {image, name};
     }
     else {
-        setPBool(false, repleace);
+        ld::setPVar<>(false, repleace);
         m_images.insert(index, {image, name});
     }
 }

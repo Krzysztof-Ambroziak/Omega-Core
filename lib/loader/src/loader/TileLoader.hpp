@@ -9,10 +9,9 @@ Copyright (c) 2023 Krzysztof Ambroziak
 #include <QXmlStreamReader>
 
 #include "Definitions.hpp"
-#include "../../include/loader/Commons.hpp"
+#include "../../include/Commons.hpp"
 
 class QSize;
-class QXmlStreamReader;
 
 namespace ld {
 class TileSheet;
