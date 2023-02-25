@@ -7,6 +7,8 @@ Copyright (c) 2023 Krzysztof Ambroziak
 
 #include "api/ITileCutter.hpp"
 
+#include <QImage>
+
 namespace ld {
 class TileCutterAdapter : public ITileCutter {
 public:

@@ -5,9 +5,10 @@ Copyright (c) 2023 Krzysztof Ambroziak
 #ifndef LD_ITILECUTTER_HPP
 #define LD_ITILECUTTER_HPP
 
-#include <QImage>
-
 #include "../../../../include/Commons.hpp"
+
+class QColor;
+class QImage;
 
 namespace ld {
 class ITileCutter {
