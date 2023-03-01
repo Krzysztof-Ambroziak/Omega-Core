@@ -7,12 +7,14 @@ Copyright (c) 2023 Krzysztof Ambroziak
 
 void ld::MapLoader::copyRawTilesToMap(Map& target,
                                       const RawTileEntity& tileEntity) {
-    const ld::Position& position = tileEntity.position;
+    ld::Position position = tileEntity.position;
     const int columns = target.size().columns;
     
-    for(int i = 0, index = position.row * columns + position.column;
-            i < tileEntity.multiplier;
-            i++, index++) {
+    for(int i = 0; i < tileEntity.multiplier; i++, position.column++) {
+        if(position.column == columns) {
+            position.row++;
+            position.column = 0;
+        }
         target.addTile(position, tileEntity.name);
     }
 }

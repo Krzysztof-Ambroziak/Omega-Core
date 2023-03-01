@@ -5,9 +5,12 @@ Copyright (c) 2023 Krzysztof Ambroziak
 #include "../../include/loader/TileSheet.hpp"
 #include "utilities/PrivateHelpers.hpp"
 
-ld::TileSheet::TileSheet(const QString& tileNamespace, ld::TileType tileType) :
+ld::TileSheet::TileSheet(const QString& tileNamespace,
+                         ld::TileType tileType,
+                         const QSize& tileSize) :
         m_sheetNamespace(tileNamespace),
-        m_tileType(tileType) {}
+        m_tileType(tileType),
+        m_tileSize(tileSize) {}
 
 void ld::TileSheet::addImage(const QImage& image, const QString& name, bool* repleace) {
     const int end = m_images.size();
@@ -63,4 +66,8 @@ int ld::TileSheet::binarySearchIndex(const QString& name) const {
     }
     
     return start;
+}
+
+QSize ld::TileSheet::tileSize() const {
+    return m_tileSize;
 }

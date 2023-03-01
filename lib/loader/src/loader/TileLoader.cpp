@@ -33,7 +33,7 @@ ld::TileSheet ld::TileLoader::loadTiles() {
         return S_NULL_TILESHEET;
     
     const ld::ITileCutter& cutter = imageCutter(header);
-    return readTiles(header.namesp, header.type, cutter);
+    return readTiles(header.namesp, header.type, cutter, header.size);
 }
 
 ld::TileLoader::TileHeader ld::TileLoader::readHeader() {
@@ -104,8 +104,9 @@ QSize ld::TileLoader::readTileSize() {
 
 ld::TileSheet ld::TileLoader::readTiles(const QString& namesp,
                                         TileType tileType,
-                                        const ITileCutter& cutter) {
-    ld::TileSheet tileSheet(namesp, tileType);
+                                        const ITileCutter& cutter,
+                                        const QSize& tileSize) {
+    ld::TileSheet tileSheet(namesp, tileType, tileSize);
     
     while(m_reader.readNextStartElement() && m_reader.name() == TILES_TILE_ENTITY) {
         const TileDefinition& tileDef = readTile();

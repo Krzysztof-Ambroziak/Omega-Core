@@ -52,7 +52,8 @@ private:
     
     TileSheet readTiles(const QString& namesp,
                         TileType tileType,
-                        const ITileCutter& cutter);
+                        const ITileCutter& cutter,
+                        const QSize& tileSize);
     
     TileDefinition readTile();
     

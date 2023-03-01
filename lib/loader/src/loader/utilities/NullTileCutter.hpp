@@ -7,6 +7,8 @@ Copyright (c) 2023 Krzysztof Ambroziak
 
 #include "api/ITileCutter.hpp"
 
+#include <QImage>
+
 namespace ld {
 class NullTileCutter : public ITileCutter {
 public:
@@ -19,7 +21,6 @@ public:
 
 private:
     NullTileCutter() = default;
-
 };
 
 inline NullTileCutter& NullTileCutter::instance() {
