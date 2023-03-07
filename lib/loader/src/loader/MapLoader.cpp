@@ -32,6 +32,9 @@ ld::Map ld::MapLoader::loadMap() {
         return S_NULL_MAP;
     const MapHeader& header = readHeader();
     
+    if(header.size.rows != header.size.columns)
+        return S_NULL_MAP;
+    
     ld::Map map = readLayers(header.size);
     map.addTileNamespaces(header.tileNamespaces);
     

@@ -13,8 +13,8 @@ Copyright (c) 2023 Krzysztof Ambroziak
 int main(int argc, char* argv[]) {
     QApplication app(argc, argv);
     
-    const ld::TileSheet& temp = ld::Loader::loadTiles(":/tiles/xml/background-tile.xml",
-                                                      ":/tiles/images/background-tile.png");
+    const ld::TileSheet& tileSheet = ld::Loader::loadTiles(":/tiles/xml/background-tile.xml",
+                                                           ":/tiles/images/background-tile.png");
     const ld::Map& map = ld::Loader::loadMap(":/maps/start-map.xml");
     
     Window window;
@@ -25,12 +25,12 @@ int main(int argc, char* argv[]) {
         for(int column = 0; column < mapModel->mapSize().columns; column++) {
             const ld::Position position{column, row};
             const QString& imageName = map.tile(position);
-            mapModel->addTile(position, QPixmap::fromImage(temp.image(imageName)));
+            mapModel->addTile(position, QPixmap::fromImage(tileSheet.image(imageName)));
         }
     
     IsometricTileRenderer* renderer = new IsometricTileRenderer;
     renderer->setMapModel(mapModel);
-    renderer->setTileSize(temp.tileSize());
+    renderer->setTileSize(tileSheet.tileSize());
     renderer->setTilePositions();
     
     window.setRenderer(renderer);
