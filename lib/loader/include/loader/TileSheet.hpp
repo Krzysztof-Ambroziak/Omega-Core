@@ -22,15 +22,11 @@ public:
     static const TileSheet NULL_TILESHEET;
 
 public:
-    TileSheet(const QString& tileNamespace,
-              TileType tileType,
-              const QSize& m_tileSize);
+    TileSheet(TileType tileType, const QSize& m_tileSize);
     
     void addImage(const QImage& image,
                   const QString& name,
                   bool* repleace = nullptr);
-    
-    QString sheetNamespace() const;
     
     QStringList keys() const;
     
@@ -44,8 +40,6 @@ private:
     int binarySearchIndex(const QString& name) const;
 
 private:
-    const QString m_sheetNamespace;
-    
     const TileType m_tileType;
     
     const QSize m_tileSize;
@@ -53,8 +47,7 @@ private:
     QVector<NamedImage> m_images;
 };
 
-inline const TileSheet TileSheet::NULL_TILESHEET(QString(),
-                                                 TileType::TILE_TYPE_UNKNOWN,
+inline const TileSheet TileSheet::NULL_TILESHEET(TileType::TILE_TYPE_UNKNOWN,
                                                  QSize());
 }  // namespace ld
 

@@ -8,5 +8,5 @@ project(OmegaCore
 
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
-add_subdirectory(game)
 add_subdirectory(lib)
+add_subdirectory(game)

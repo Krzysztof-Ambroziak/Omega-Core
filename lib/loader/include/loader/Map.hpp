@@ -15,15 +15,11 @@ public:
     static const Map NULL_MAP;
 
 public:
-    Map(const MapSize& size);
+    Map(const MapSize& size, const QString& name);
     
     MapSize size() const;
     
-    void addTileNamespace(const QString& tileNamespace);
-    
-    void addTileNamespaces(const QStringList& tileNamespace);
-    
-    QStringList tileNamespaces() const;
+    QString name() const;
     
     QString tile(const Position& position) const;
     
@@ -35,12 +31,12 @@ private:
 private:
     const MapSize m_size;
     
-    QStringList m_tileNamespaces;
+    const QString m_name;
     
     QVector<QString> m_tiles;
 };
 
-inline const Map Map::NULL_MAP({0, 0});
+inline const Map Map::NULL_MAP({0, 0}, QString());
 }  // namespace ld
 
 #endif  // LD_MAP_HPP

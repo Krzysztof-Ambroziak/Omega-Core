@@ -8,6 +8,7 @@ set(game "game")
 set(gui "gui")
 set(models "models")
 set(renderers "renderers")
+set(services "services")
 set(interface "api")
 set(res "resources")
 
@@ -28,6 +29,8 @@ target_sources(OC-game
     PRIVATE ${main}/${renderers}/IsometricTileRenderer.hpp
     PRIVATE ${main}/${renderers}/IsometricTileRenderer.cpp
     PRIVATE ${main}/${renderers}/${interface}/IRenderer.hpp
+    PRIVATE ${main}/${services}/MapService.hpp
+    PRIVATE ${main}/${services}/MapService.cpp
     PRIVATE ${RESOURCES}
 )
 

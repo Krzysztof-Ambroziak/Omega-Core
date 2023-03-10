@@ -5,26 +5,17 @@ Copyright (c) 2023 Krzysztof Ambroziak
 #include "../include/loader/Map.hpp"
 #include "utilities/PrivateHelpers.hpp"
 
-ld::Map::Map(const MapSize& size) :
+ld::Map::Map(const MapSize& size, const QString& name) :
         m_size(size),
+        m_name(name),
         m_tiles(size.columns * size.rows) {}
 
 ld::MapSize ld::Map::size() const {
     return m_size;
 }
 
-void ld::Map::addTileNamespace(const QString& tileNamespace) {
-    if(!m_tileNamespaces.contains(tileNamespace))
-        m_tileNamespaces += tileNamespace;
-}
-
-void ld::Map::addTileNamespaces(const QStringList& tileNamespace) {
-    for(const QString& tileNamespace : tileNamespace)
-        addTileNamespace(tileNamespace);
-}
-
-QStringList ld::Map::tileNamespaces() const {
-    return m_tileNamespaces;
+QString ld::Map::name() const {
+    return m_name;
 }
 
 QString ld::Map::tile(const Position& position) const {

@@ -20,7 +20,6 @@ class ITileCutter;
 class TileLoader {
 private:
     struct TileHeader {
-        QString namesp;
         QSize size;
         TileType type;
         TilePacked packed;
@@ -50,8 +49,7 @@ private:
     
     QSize readTileSize();
     
-    TileSheet readTiles(const QString& namesp,
-                        TileType tileType,
+    TileSheet readTiles(TileType tileType,
                         const ITileCutter& cutter,
                         const QSize& tileSize);
     
@@ -74,7 +72,6 @@ private:
     inline static const QString ROOT = "tileset";
     inline static const QString HEADER = "header";
     inline static const QString TILES = "tiles";
-    inline static const QString HEADER_NAMESPACE = "namespace";
     inline static const QString HEADER_TYPE = "type";
     inline static const QString HEADER_PACKED = "packed";
     inline static const QString HEADER_TILESIZE = "tilesize";

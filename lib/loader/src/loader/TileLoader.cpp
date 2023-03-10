@@ -23,17 +23,11 @@ ld::TileSheet ld::TileLoader::loadTiles() {
     
     const TileHeader& header = readHeader();
     
-    if(header.namesp.isEmpty() ||
-            header.packed == TILE_PACKED_UNKNOWN ||
-            header.type == TILE_TYPE_UNKNOWN ||
-            header.size.isEmpty())
-        return S_NULL_TILESHEET;
-    
     if(!m_reader.readNextStartElement() || m_reader.name() != TILES)
         return S_NULL_TILESHEET;
     
     const ld::ITileCutter& cutter = imageCutter(header);
-    return readTiles(header.namesp, header.type, cutter, header.size);
+    return readTiles(header.type, cutter, header.size);
 }
 
 ld::TileLoader::TileHeader ld::TileLoader::readHeader() {
@@ -42,9 +36,6 @@ ld::TileLoader::TileHeader ld::TileLoader::readHeader() {
     while(m_reader.readNextStartElement()) {
         const QStringRef& name = m_reader.name();
         
-        if(name == HEADER_NAMESPACE)
-            header.namesp = m_reader.readElementText(QXmlStreamReader::SkipChildElements)
-                                    .trimmed();
         if(name == HEADER_TYPE)
             header.type = readTileType();
         if(name == HEADER_PACKED)
@@ -102,11 +93,10 @@ QSize ld::TileLoader::readTileSize() {
     return {width, height};
 }
 
-ld::TileSheet ld::TileLoader::readTiles(const QString& namesp,
-                                        TileType tileType,
+ld::TileSheet ld::TileLoader::readTiles(TileType tileType,
                                         const ITileCutter& cutter,
                                         const QSize& tileSize) {
-    ld::TileSheet tileSheet(namesp, tileType, tileSize);
+    ld::TileSheet tileSheet(tileType, tileSize);
     
     while(m_reader.readNextStartElement() && m_reader.name() == TILES_TILE_ENTITY) {
         const TileDefinition& tileDef = readTile();

@@ -5,10 +5,7 @@ Copyright (c) 2023 Krzysztof Ambroziak
 #include "../../include/loader/TileSheet.hpp"
 #include "utilities/PrivateHelpers.hpp"
 
-ld::TileSheet::TileSheet(const QString& tileNamespace,
-                         ld::TileType tileType,
-                         const QSize& tileSize) :
-        m_sheetNamespace(tileNamespace),
+ld::TileSheet::TileSheet(ld::TileType tileType, const QSize& tileSize) :
         m_tileType(tileType),
         m_tileSize(tileSize) {}
 
@@ -24,10 +21,6 @@ void ld::TileSheet::addImage(const QImage& image, const QString& name, bool* rep
         ld::setPVar<>(false, repleace);
         m_images.insert(index, {image, name});
     }
-}
-
-QString ld::TileSheet::sheetNamespace() const {
-    return m_sheetNamespace;
 }
 
 QStringList ld::TileSheet::keys() const {

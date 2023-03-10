@@ -9,7 +9,6 @@ Copyright (c) 2023 Krzysztof Ambroziak
 #include <QPainter>
 
 void IsometricTileRenderer::render(QPainter& painter) {
-    int i = 0;
     for(const ExtPosition& position : m_positions) {
         const QPixmap* image = m_mapModel->tile(position.mapPosition);
         painter.drawPixmap(position.tilePosition.xOffset,
