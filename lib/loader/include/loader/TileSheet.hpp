@@ -21,6 +21,9 @@ private:
 public:
     static const TileSheet NULL_TILESHEET;
 
+private:
+    static constexpr auto L_COMPARATOR = [](const auto& a, const auto& b) -> bool { return a.name < b.name; };
+
 public:
     TileSheet(TileType tileType, const QSize& m_tileSize);
     
@@ -37,12 +40,9 @@ public:
     QSize tileSize() const;
 
 private:
-    int binarySearchIndex(const QString& name) const;
-
-private:
-    const TileType m_tileType;
+    const TileType c_tileType;
     
-    const QSize m_tileSize;
+    const QSize c_tileSize;
     
     QVector<NamedImage> m_images;
 };

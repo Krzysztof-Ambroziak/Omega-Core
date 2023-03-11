@@ -2,24 +2,29 @@
 Copyright (c) 2023 Krzysztof Ambroziak
 */
 
+#include <algorithm>  /* std::lower_bound */
+
 #include "../../include/loader/TileSheet.hpp"
 #include "utilities/PrivateHelpers.hpp"
 
 ld::TileSheet::TileSheet(ld::TileType tileType, const QSize& tileSize) :
-        m_tileType(tileType),
-        m_tileSize(tileSize) {}
+        c_tileType(tileType),
+        c_tileSize(tileSize) {}
 
 void ld::TileSheet::addImage(const QImage& image, const QString& name, bool* repleace) {
-    const int end = m_images.size();
-    const int index = binarySearchIndex(name);
+    const NamedImage& newNamedImage {image, name};
+    const auto& it = std::lower_bound<>(m_images.begin(),
+                                        m_images.end(),
+                                        newNamedImage,
+                                        L_COMPARATOR);
     
-    if(index < end && name == m_images[index].name) {
+    if(it < m_images.end() && name == it->name) {
+        it->image = newNamedImage.image;
         ld::setPVar<>(true, repleace);
-        m_images[index] = {image, name};
     }
     else {
+        m_images.insert(it, newNamedImage);
         ld::setPVar<>(false, repleace);
-        m_images.insert(index, {image, name});
     }
 }
 
@@ -33,34 +38,22 @@ QStringList ld::TileSheet::keys() const {
 }
 
 QImage ld::TileSheet::image(const QString& name) const {
-    const int index = binarySearchIndex(name);
+    const NamedImage& emptyNamedImage {{}, name};
+    const auto& it = std::lower_bound<>(m_images.cbegin(),
+                                        m_images.cend(),
+                                        emptyNamedImage,
+                                        L_COMPARATOR);
     
-    if(index < m_images.size() && name == m_images[index].name)
-        return m_images[index].image;
+    if(it < m_images.cend() && name == it->name)
+        return it->image;
     
-    return {};
+    return emptyNamedImage.image;
 }
 
 ld::TileType ld::TileSheet::tileType() const {
-    return m_tileType;
-}
-
-int ld::TileSheet::binarySearchIndex(const QString& name) const {
-    int start = 0;
-    int end = m_images.size();
-    
-    while(start < end) {
-        const int med = (start + end) / 2;
-        
-        if(name > m_images[med].name)
-            start = med + 1;
-        else
-            end = med;
-    }
-    
-    return start;
+    return c_tileType;
 }
 
 QSize ld::TileSheet::tileSize() const {
-    return m_tileSize;
+    return c_tileSize;
 }
