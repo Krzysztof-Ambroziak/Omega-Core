@@ -7,38 +7,41 @@ Copyright (c) 2023 Krzysztof Ambroziak
 
 #include <QVector>
 
-#include <memory>
-
-#include "../models/MapModel.hpp"
-
 namespace ld {
 class Map;
-}
+class TileSheet;
+}  // namespace ld
+
+namespace std {
+template<class T>
+class shared_ptr;
+}  // namespace std
+
+class MapModel;
+class QPixmap;
 
 class MapService {
-private:
-    struct PTile {
-        QString name;
-        QPixmap* image;
-    };
-
 public:
     MapService(MapModel* model);
-
+    
     void loadTileSheet(const QString& definitionFilename,
                        const QString& imageFileName);
-
+    
     void loadMap(const QString& definitionFilename);
-
+    
     void changeMap(const QString& mapName);
 
-    ~MapService();
+private:
+    std::shared_ptr<ld::Map> findMap(const QString& mapName) const;
+    
+    QPixmap findTile(const QString& tileName,
+                     const QStringList& tileNamespaces) const;
 
 private:
-    QVector<PTile> m_tileSheets;
-
+    QVector<std::shared_ptr<ld::TileSheet>> m_tileSheets;
+    
     QVector<std::shared_ptr<ld::Map>> m_maps;
-
+    
     MapModel* const m_mapModel;
 };
 

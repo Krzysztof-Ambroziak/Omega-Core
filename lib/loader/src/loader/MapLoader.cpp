@@ -34,7 +34,7 @@ ld::Map ld::MapLoader::loadMap() {
     if(header.size.rows != header.size.columns)
         return S_NULL_MAP;
     
-    ld::Map map = readLayers(header.size, header.name);
+    ld::Map map = readLayers(header);
     
     return map;
 }
@@ -50,6 +50,8 @@ ld::MapLoader::MapHeader ld::MapLoader::readHeader() {
                                   .trimmed();
         if(name == HEADER_MAP_SIZE)
             header.size = readMapSize();
+        if(name == HEADER_NAMESPACES)
+            header.namespaces = readTileNamespaces();
     }
     
     return header;
@@ -73,11 +75,25 @@ ld::MapSize ld::MapLoader::readMapSize() {
     return size;
 }
 
-ld::Map ld::MapLoader::readLayers(const MapSize& mapSize, const QString& mapName) {
+QStringList ld::MapLoader::readTileNamespaces() {
+    QStringList namespaces;
+    
+    while(m_reader.readNextStartElement()) {
+        if(m_reader.name() == HEADER_TILE_NAMESPACE)
+            if(const QString& tileNamespace =
+                    m_reader.readElementText(QXmlStreamReader::SkipChildElements)
+                    .trimmed() ; !tileNamespace.isEmpty())
+                namespaces += tileNamespace;
+    }
+    
+    return namespaces;
+}
+
+ld::Map ld::MapLoader::readLayers(const MapHeader& header) {
     if(!m_reader.readNextStartElement() || m_reader.name() != LAYERS)
         return ld::Map::NULL_MAP;
     
-    Map map(mapSize, mapName);
+    Map map(header.name, header.size, header.namespaces);
     while(m_reader.readNextStartElement()) {
         const QStringRef& name = m_reader.name();
         

@@ -5,25 +5,30 @@ Copyright (c) 2023 Krzysztof Ambroziak
 #include "../include/loader/Map.hpp"
 #include "utilities/PrivateHelpers.hpp"
 
-ld::Map::Map(const MapSize& size, const QString& name) :
-        m_size(size),
+ld::Map::Map(const QString& name, const MapSize& size, const QStringList& tileNamespaces) :
         m_name(name),
+        m_size(size),
+        m_namespaces(tileNamespaces),
         m_tiles(size.columns * size.rows) {}
-
-ld::MapSize ld::Map::size() const {
-    return m_size;
-}
 
 QString ld::Map::name() const {
     return m_name;
 }
 
+ld::MapSize ld::Map::size() const {
+    return m_size;
+}
+
+QStringList ld::Map::tileNamespaces() const {
+    return m_namespaces;
+}
+
 QString ld::Map::tile(const Position& position) const {
-    return m_tiles[indexFromPosition(position)];
+    return m_tiles[pos2ind(position)];
 }
 
 void ld::Map::addTile(const Position& position, const QString& tileName, bool* ok) {
-    if(int index = indexFromPosition(position) ;
+    if(int index = pos2ind(position) ;
             index >= 0 && index < m_tiles.size() && m_tiles[index] != tileName) {
         m_tiles[index] = tileName;
         ld::setPVar<>(true, ok);
@@ -32,6 +37,6 @@ void ld::Map::addTile(const Position& position, const QString& tileName, bool* o
         ld::setPVar<>(false, ok);
 }
 
-int ld::Map::indexFromPosition(const Position& position) const {
+int ld::Map::pos2ind(const Position& position) const {
     return position.row * m_size.columns + position.column;
 }

@@ -25,11 +25,15 @@ private:
     static constexpr auto L_COMPARATOR = [](const auto& a, const auto& b) -> bool { return a.name < b.name; };
 
 public:
-    TileSheet(TileType tileType, const QSize& m_tileSize);
+    TileSheet(const QString& tileNamespace,
+              TileType tileType,
+              const QSize& m_tileSize);
     
     void addImage(const QImage& image,
                   const QString& name,
                   bool* repleace = nullptr);
+    
+    QString sheetNamespace() const;
     
     QStringList keys() const;
     
@@ -40,6 +44,8 @@ public:
     QSize tileSize() const;
 
 private:
+    const QString c_tileNamespace;
+    
     const TileType c_tileType;
     
     const QSize c_tileSize;
@@ -47,7 +53,8 @@ private:
     QVector<NamedImage> m_images;
 };
 
-inline const TileSheet TileSheet::NULL_TILESHEET(TileType::TILE_TYPE_UNKNOWN,
+inline const TileSheet TileSheet::NULL_TILESHEET(QString(),
+                                                 TileType::TILE_TYPE_UNKNOWN,
                                                  QSize());
 }  // namespace ld
 

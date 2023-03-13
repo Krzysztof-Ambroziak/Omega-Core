@@ -13,7 +13,7 @@ class MapModel : public IMapModel {
 public:
     const QPixmap* tile(const ld::Position& position) const override;
     
-    void addTile(const ld::Position& position, const QPixmap& image);
+    void addTile(const ld::Position& position, const QPixmap* image);
     
     void setMapSize(const ld::MapSize& mapSize);
 

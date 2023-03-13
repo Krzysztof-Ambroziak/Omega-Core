@@ -17,6 +17,7 @@ private:
     struct MapHeader {
         QString name;
         MapSize size;
+        QStringList namespaces;
     };
     
     struct RawTileEntity {
@@ -45,7 +46,9 @@ private:
     
     MapSize readMapSize();
     
-    Map readLayers(const MapSize& mapSize, const QString& mapName);
+    QStringList readTileNamespaces();
+    
+    Map readLayers(const MapHeader& header);
     
     void readTiles(Map& map);
     
@@ -63,8 +66,10 @@ private:
     inline static const QString HEADER = "header";
     inline static const QString HEADER_MAP_NAME = "name";
     inline static const QString HEADER_MAP_SIZE = "map-size";
+    inline static const QString HEADER_NAMESPACES = "namespaces";
     inline static const QString HEADER_MAP_ROWS = "rows";
     inline static const QString HEADER_MAP_COLUMNS = "columns";
+    inline static const QString HEADER_TILE_NAMESPACE = "namespace";
     inline static const QString LAYERS = "layers";
     inline static const QString TILE_LAYER = "tile-layer";
     inline static const QString SPRITE_LAYER = "sprite-layer";
