@@ -7,12 +7,42 @@ Copyright (c) 2023 Krzysztof Ambroziak
 #include "../../include/loader/TileSheet.hpp"
 #include "utilities/PrivateHelpers.hpp"
 
-ld::TileSheet::TileSheet(const QString& tileNamespace,
-                         ld::TileType tileType,
+ld::TileSheet::TileSheet() :
+        m_tileType(ld::TileType::TILE_TYPE_UNKNOWN) {}
+
+ld::TileSheet::TileSheet(ld::TileType tileType,
                          const QSize& tileSize) :
-        c_tileNamespace(tileNamespace),
-        c_tileType(tileType),
-        c_tileSize(tileSize) {}
+        m_tileType(tileType),
+        m_tileSize(tileSize) {}
+
+ld::TileType ld::TileSheet::tileType() const {
+    return m_tileType;
+}
+
+void ld::TileSheet::setTileType(TileType tileType) {
+    m_tileType = tileType;
+}
+
+QSize ld::TileSheet::tileSize() const {
+    return m_tileSize;
+}
+
+void ld::TileSheet::setTileSize(const QSize& tileSize) {
+    m_tileSize = tileSize;
+}
+
+QImage ld::TileSheet::image(const QString& name) const {
+    const NamedImage& emptyNamedImage {{}, name};
+    const auto& it = std::lower_bound<>(m_images.cbegin(),
+                                        m_images.cend(),
+                                        emptyNamedImage,
+                                        L_COMPARATOR);
+    
+    if(it < m_images.cend() && name == it->name)
+        return it->image;
+    
+    return emptyNamedImage.image;
+}
 
 void ld::TileSheet::addImage(const QImage& image, const QString& name, bool* repleace) {
     const NamedImage& newNamedImage {image, name};
@@ -31,10 +61,6 @@ void ld::TileSheet::addImage(const QImage& image, const QString& name, bool* rep
     }
 }
 
-QString ld::TileSheet::sheetNamespace() const {
-    return c_tileNamespace;
-}
-
 QStringList ld::TileSheet::keys() const {
     QStringList keys;
     
@@ -42,25 +68,4 @@ QStringList ld::TileSheet::keys() const {
         keys += image.name;
     
     return keys;
-}
-
-QImage ld::TileSheet::image(const QString& name) const {
-    const NamedImage& emptyNamedImage {{}, name};
-    const auto& it = std::lower_bound<>(m_images.cbegin(),
-                                        m_images.cend(),
-                                        emptyNamedImage,
-                                        L_COMPARATOR);
-    
-    if(it < m_images.cend() && name == it->name)
-        return it->image;
-    
-    return emptyNamedImage.image;
-}
-
-ld::TileType ld::TileSheet::tileType() const {
-    return c_tileType;
-}
-
-QSize ld::TileSheet::tileSize() const {
-    return c_tileSize;
 }

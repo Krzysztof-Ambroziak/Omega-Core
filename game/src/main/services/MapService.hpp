@@ -7,9 +7,11 @@ Copyright (c) 2023 Krzysztof Ambroziak
 
 #include <QVector>
 
+#include "loader/TileSheet.hpp"
+
 namespace ld {
 class Map;
-class TileSheet;
+class Sprite;
 }  // namespace ld
 
 namespace std {
@@ -27,18 +29,20 @@ public:
     void loadTileSheet(const QString& definitionFilename,
                        const QString& imageFileName);
     
+    void loadSpriteSheet(const QString& definitionFilename,
+                         const QString& imageFileName);
+    
     void loadMap(const QString& definitionFilename);
     
     void changeMap(const QString& mapName);
 
 private:
     std::shared_ptr<ld::Map> findMap(const QString& mapName) const;
-    
-    QPixmap findTile(const QString& tileName,
-                     const QStringList& tileNamespaces) const;
 
 private:
-    QVector<std::shared_ptr<ld::TileSheet>> m_tileSheets;
+    ld::TileSheet m_tileSheet;
+    
+    QVector<std::shared_ptr<ld::Sprite>> m_spriteSheets;
     
     QVector<std::shared_ptr<ld::Map>> m_maps;
     

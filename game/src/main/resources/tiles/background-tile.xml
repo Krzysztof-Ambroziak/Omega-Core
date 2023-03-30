@@ -3,7 +3,6 @@
     <header>
         <type>isometric</type>
         <packed>unpacked</packed>
-        <namespace>basic</namespace>
         <tilesize>
             <width>64</width>
             <height>32</height>

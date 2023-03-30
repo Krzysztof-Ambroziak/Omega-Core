@@ -15,6 +15,7 @@ set(res "resources")
 
 qt5_add_resources(RESOURCES
     ${main}/${res}/tiles.qrc
+    ${main}/${res}/sprites.qrc
     ${main}/${res}/maps.qrc
 )
 

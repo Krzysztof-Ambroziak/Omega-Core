@@ -5,6 +5,8 @@ Copyright (c) 2023 Krzysztof Ambroziak
 #ifndef LD_LOADER_HPP
 #define LD_LOADER_HPP
 
+#include "Sprite.hpp"
+
 class QString;
 class QByteArray;
 
@@ -14,15 +16,18 @@ class TileSheet;
 
 class Loader {
 public:
-    static TileSheet loadTiles(const QString& definitionFilename, const QString& imageFilename);
+    static TileSheet loadTiles(const QString& definitionFilename,
+                               const QString& imageFilename);
+    
+    static QVector<Sprite> loadSprite(const QString& definitionFilename, const QString& imageFilename);
     
     static Map loadMap(const QString& definitionFilename);
 
-private:
-    static QByteArray readFile(const QString& filename);
-
 public:
     Loader() = delete;
+
+private:
+    static QByteArray readFile(const QString& filename);
 };
 }  // namespace ld
 

@@ -40,9 +40,6 @@ ld::TileLoader::TileHeader ld::TileLoader::readHeader() {
             header.type = readTileType();
         if(name == HEADER_PACKED)
             header.packed = readTilePacked();
-        if(name == HEADER_NAMESPACE)
-            header.tileNamespace = m_reader.readElementText(QXmlStreamReader::SkipChildElements)
-                                           .trimmed();
         if(name == HEADER_TILESIZE)
             header.size = readTileSize();
     }
@@ -98,7 +95,7 @@ QSize ld::TileLoader::readTileSize() {
 
 ld::TileSheet ld::TileLoader::readTiles(const TileHeader& header,
                                         const ITileCutter& cutter) {
-    ld::TileSheet tileSheet(header.tileNamespace, header.type, header.size);
+    ld::TileSheet tileSheet(header.type, header.size);
     
     while(m_reader.readNextStartElement() && m_reader.name() == TILES_TILE_ENTITY) {
         const TileDefinition& tileDef = readTile();

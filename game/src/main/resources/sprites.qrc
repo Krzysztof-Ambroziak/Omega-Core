@@ -1,0 +1,8 @@
+<RCC>
+    <qresource prefix="/sprites/images">
+        <file alias="sprites.png">sprites/sprites.png</file>
+    </qresource>
+    <qresource prefix="/sprites/xml">
+        <file alias="sprites.xml">sprites/sprites.xml</file>
+    </qresource>
+</RCC>

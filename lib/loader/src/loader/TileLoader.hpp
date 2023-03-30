@@ -22,7 +22,6 @@ private:
     struct TileHeader {
         QSize size;
         TileType type;
-        QString tileNamespace;
         TilePacked packed;
     };
     
@@ -73,7 +72,6 @@ private:
     inline static const QString TILES = "tiles";
     inline static const QString HEADER_TYPE = "type";
     inline static const QString HEADER_PACKED = "packed";
-    inline static const QString HEADER_NAMESPACE = "namespace";
     inline static const QString HEADER_TILESIZE = "tilesize";
     inline static const QString HEADER_TILESIZE_WIDTH = "width";
     inline static const QString HEADER_TILESIZE_HEIGHT = "height";

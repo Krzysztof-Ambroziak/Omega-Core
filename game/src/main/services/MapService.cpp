@@ -10,18 +10,22 @@ Copyright (c) 2023 Krzysztof Ambroziak
 #include "../models/MapModel.hpp"
 
 #include "loader/Loader.hpp"
-#include "loader/TileSheet.hpp"
 #include "loader/Map.hpp"
+#include "loader/Sprite.hpp"
 
 MapService::MapService(MapModel* model) : m_mapModel(model) {}
 
 void MapService::loadTileSheet(const QString& def, const QString& img) {
-    const ld::TileSheet& tileSheet = ld::Loader::loadTiles(def, img);
+    m_tileSheet = ld::Loader::loadTiles(def, img);
+}
+
+void MapService::loadSpriteSheet(const QString& def,
+                                 const QString& img) {
+    const auto& sprites = ld::Loader::loadSprite(def, img);
     
-    if(!tileSheet.tileSize().isEmpty() &&
-            tileSheet.tileType() != ld::TILE_TYPE_UNKNOWN &&
-            tileSheet.keys().size() > 0)
-        m_tileSheets += std::make_shared<ld::TileSheet>(tileSheet);
+    foreach(const auto& sprite, sprites) {
+        m_spriteSheets += std::make_shared<ld::Sprite>(sprite);
+    }
 }
 
 void MapService::loadMap(const QString& filename) {
@@ -48,7 +52,6 @@ void MapService::changeMap(const QString& mapName) {
         return;
     
     const ld::MapSize& mapSize = map->size();
-    const QStringList& tileNamespaces = map->tileNamespaces();
     QVector<NamedImage> images;
     
     m_mapModel->setMapSize(mapSize);
@@ -66,7 +69,7 @@ void MapService::changeMap(const QString& mapName) {
                     it < images.end() && it->name == name)
                 image.image = it->image;
             else
-                image.image = new QPixmap(findTile(image.name, tileNamespaces));
+                image.image = new QPixmap(QPixmap::fromImage(m_tileSheet.image(image.name)));
             
             m_mapModel->addTile(pos, image.image);
         }
@@ -82,17 +85,4 @@ std::shared_ptr<ld::Map> MapService::findMap(const QString& mapName) const {
         }
     
     return map;
-}
-
-QPixmap MapService::findTile(const QString& tn,
-                             const QStringList& tileNamespaces) const {
-    foreach(const auto& tileNamespace, tileNamespaces)
-        foreach(const auto& tileSheet, m_tileSheets)
-            if(tileNamespace == tileSheet->sheetNamespace()) {
-                foreach(const auto& tileName, tileSheet->keys())
-                    if(tn == tileName)
-                        return QPixmap::fromImage(tileSheet->image(tn));
-            }
-    
-    return {};
 }

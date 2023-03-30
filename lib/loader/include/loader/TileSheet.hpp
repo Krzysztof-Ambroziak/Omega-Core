@@ -12,49 +12,51 @@ Copyright (c) 2023 Krzysztof Ambroziak
 
 namespace ld {
 class TileSheet {
+public:
+    enum MergeMethod {
+        OVERRIDE,
+        IGNORE,
+        ADD
+    };
+
 private:
     struct NamedImage {
         QImage image;
         QString name;
     };
+    
+    static constexpr auto L_COMPARATOR = [](const auto& a, const auto& b) -> bool { return a.name < b.name; };
 
 public:
     static const TileSheet NULL_TILESHEET;
 
-private:
-    static constexpr auto L_COMPARATOR = [](const auto& a, const auto& b) -> bool { return a.name < b.name; };
-
 public:
-    TileSheet(const QString& tileNamespace,
-              TileType tileType,
-              const QSize& m_tileSize);
+    TileSheet();
     
+    TileSheet(TileType tileType, const QSize& m_tileSize);
+    
+    TileType tileType() const;
+    void setTileType(TileType tileType);
+    
+    QSize tileSize() const;
+    void setTileSize(const QSize& tileSize);
+    
+    QImage image(const QString& name) const;
     void addImage(const QImage& image,
                   const QString& name,
                   bool* repleace = nullptr);
     
-    QString sheetNamespace() const;
-    
     QStringList keys() const;
-    
-    QImage image(const QString& name) const;
-    
-    TileType tileType() const;
-    
-    QSize tileSize() const;
 
 private:
-    const QString c_tileNamespace;
+    TileType m_tileType;
     
-    const TileType c_tileType;
-    
-    const QSize c_tileSize;
+    QSize m_tileSize;
     
     QVector<NamedImage> m_images;
 };
 
-inline const TileSheet TileSheet::NULL_TILESHEET(QString(),
-                                                 TileType::TILE_TYPE_UNKNOWN,
+inline const TileSheet TileSheet::NULL_TILESHEET(TileType::TILE_TYPE_UNKNOWN,
                                                  QSize());
 }  // namespace ld
 

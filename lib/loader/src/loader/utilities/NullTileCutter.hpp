@@ -28,7 +28,7 @@ inline NullTileCutter& NullTileCutter::instance() {
     return cutter;
 }
 
-inline QImage NullTileCutter::copy(const Position& position, const QColor& color) const {
+QImage NullTileCutter::copy(const Position& position, const QColor& color) const {
     return QImage();
 }
 }  // namespace ld
