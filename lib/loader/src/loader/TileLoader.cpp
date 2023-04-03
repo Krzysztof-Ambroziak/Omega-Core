@@ -7,6 +7,7 @@ Copyright (c) 2023 Krzysztof Ambroziak
 #include "utilities/IsometricTileCutter.hpp"
 #include "utilities/NullTileCutter.hpp"
 #include "utilities/SquaredTileCutter.hpp"
+#include "utilities/PrivateHelpers.hpp"
 
 ld::TileLoader::TileLoader(const QString& def, const QImage& image) :
         m_reader(def),
@@ -32,6 +33,7 @@ ld::TileSheet ld::TileLoader::loadTiles() {
 
 ld::TileLoader::TileHeader ld::TileLoader::readHeader() {
     TileHeader header;
+    const QStringRef& tagName = m_reader.name();
     
     while(m_reader.readNextStartElement()) {
         const QStringRef& name = m_reader.name();
@@ -43,6 +45,7 @@ ld::TileLoader::TileHeader ld::TileLoader::readHeader() {
         if(name == HEADER_TILESIZE)
             header.size = readTileSize();
     }
+    exitTag(tagName, m_reader);
     
     return header;
 }
@@ -104,7 +107,7 @@ ld::TileSheet ld::TileLoader::readTiles(const TileHeader& header,
             continue;
         
         QImage image = cutter.copy(tileDef.position, tileDef.color);
-        tileSheet.addImage(image, tileDef.name);
+        tileSheet.addImage(QPixmap::fromImage(image), tileDef.name);
     }
     
     return tileSheet;
@@ -150,6 +153,7 @@ ld::Position ld::TileLoader::readPosition() {
 
 QColor ld::TileLoader::readColor() {
     QColor color;
+    const QStringRef& tagName = m_reader.name();
     
     while(m_reader.readNextStartElement()) {
         const QStringRef& name = m_reader.name();
@@ -164,6 +168,7 @@ QColor ld::TileLoader::readColor() {
         if(name == TILE_COLOR_BLUE)
             color.setBlue(value);
     }
+    exitTag(tagName, m_reader);
     
     return color;
 }

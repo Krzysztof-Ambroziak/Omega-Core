@@ -31,8 +31,9 @@ void ld::TileSheet::setTileSize(const QSize& tileSize) {
     m_tileSize = tileSize;
 }
 
-QImage ld::TileSheet::image(const QString& name) const {
-    const NamedImage& emptyNamedImage {{}, name};
+const QPixmap& ld::TileSheet::image(const QString& name) const {
+    static NamedImage emptyNamedImage;
+    emptyNamedImage.name = name;
     const auto& it = std::lower_bound<>(m_images.cbegin(),
                                         m_images.cend(),
                                         emptyNamedImage,
@@ -44,7 +45,7 @@ QImage ld::TileSheet::image(const QString& name) const {
     return emptyNamedImage.image;
 }
 
-void ld::TileSheet::addImage(const QImage& image, const QString& name, bool* repleace) {
+void ld::TileSheet::addImage(const QPixmap& image, const QString& name, bool* repleace) {
     const NamedImage& newNamedImage {image, name};
     const auto& it = std::lower_bound<>(m_images.begin(),
                                         m_images.end(),

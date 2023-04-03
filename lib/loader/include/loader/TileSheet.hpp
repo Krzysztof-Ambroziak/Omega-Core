@@ -5,7 +5,7 @@ Copyright (c) 2023 Krzysztof Ambroziak
 #ifndef LD_TILESHEET_HPP
 #define LD_TILESHEET_HPP
 
-#include <QImage>
+#include <QPixmap>
 #include <QVector>
 
 #include "Commons.hpp"
@@ -21,7 +21,7 @@ public:
 
 private:
     struct NamedImage {
-        QImage image;
+        QPixmap image;
         QString name;
     };
     
@@ -41,8 +41,8 @@ public:
     QSize tileSize() const;
     void setTileSize(const QSize& tileSize);
     
-    QImage image(const QString& name) const;
-    void addImage(const QImage& image,
+    const QPixmap& image(const QString& name) const;
+    void addImage(const QPixmap& image,
                   const QString& name,
                   bool* repleace = nullptr);
     

@@ -69,7 +69,7 @@ void MapService::changeMap(const QString& mapName) {
                     it < images.end() && it->name == name)
                 image.image = it->image;
             else
-                image.image = new QPixmap(QPixmap::fromImage(m_tileSheet.image(image.name)));
+                image.image = new QPixmap(m_tileSheet.image(image.name));
             
             m_mapModel->addTile(pos, image.image);
         }
