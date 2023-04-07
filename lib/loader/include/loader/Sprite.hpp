@@ -10,9 +10,6 @@ Copyright (c) 2023 Krzysztof Ambroziak
 namespace ld {
 class Sprite {
 public:
-    QString name() const;
-    void setName(const QString& name);
-    
     QPoint pivot() const;
     void setPivot(QPoint pivot);
     
@@ -23,8 +20,6 @@ public:
     int size() const;
 
 private:
-    QString m_name;
-    
     QPoint m_pivot;
     
     QVector<QPixmap> m_images;

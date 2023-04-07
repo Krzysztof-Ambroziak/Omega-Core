@@ -4,20 +4,21 @@ Copyright (c) 2023 Krzysztof Ambroziak
 
 #include "SpriteLoader.hpp"
 #include "../../include/loader/Sprite.hpp"
+#include "utilities/PrivateHelpers.hpp"
 
 ld::SpriteLoader::SpriteLoader(const QString& def, const QImage& image) :
         m_reader(def),
         m_image(image) {}
 
-QVector<ld::Sprite> ld::SpriteLoader::loadSprites() {
+ld::SpriteSheet ld::SpriteLoader::loadSprites() {
     if(!m_reader.readNextStartElement() || m_reader.name() != ROOT)
         return {};
     
     return readSprites();
 }
 
-QVector<ld::Sprite> ld::SpriteLoader::readSprites() {
-    QVector<ld::Sprite> sprites;
+ld::SpriteSheet ld::SpriteLoader::readSprites() {
+    SpriteSheet spriteSheet;
     
     while(m_reader.readNextStartElement())
         if(m_reader.name() == SPRITE) {
@@ -29,18 +30,18 @@ QVector<ld::Sprite> ld::SpriteLoader::readSprites() {
             const QVector<QPixmap>& images = copySubimage(spriteDef.position, spriteDef.images);
             
             ld::Sprite sprite;
-            sprite.setName(spriteDef.name);
             sprite.setPivot(spriteDef.pivot);
             sprite.addImages(images);
             
-            sprites += sprite;
+            spriteSheet.addSprite(sprite, spriteDef.name);
         }
     
-    return sprites;
+    return spriteSheet;
 }
 
 ld::SpriteLoader::SpriteDefinition ld::SpriteLoader::readSprite() {
-    SpriteDefinition spriteDefinition {QString(), 0, {}};
+    SpriteDefinition spriteDefinition;
+    const QStringRef& tagName = m_reader.name();
     
     while(m_reader.readNextStartElement()) {
         const QStringRef& name = m_reader.name();
@@ -57,6 +58,7 @@ ld::SpriteLoader::SpriteDefinition ld::SpriteLoader::readSprite() {
         if(name == PIVOT)
             spriteDefinition.pivot = readPivotPoint();
     }
+    exitTag(tagName, m_reader);
     
     return spriteDefinition;
 }

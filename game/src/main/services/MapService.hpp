@@ -7,11 +7,11 @@ Copyright (c) 2023 Krzysztof Ambroziak
 
 #include <QVector>
 
+#include "loader/SpriteSheet.hpp"
 #include "loader/TileSheet.hpp"
 
 namespace ld {
 class Map;
-class Sprite;
 }  // namespace ld
 
 namespace std {
@@ -42,7 +42,7 @@ private:
 private:
     ld::TileSheet m_tileSheet;
     
-    QVector<std::shared_ptr<ld::Sprite>> m_spriteSheets;
+    ld::SpriteSheet m_spriteSheets;
     
     QVector<std::shared_ptr<ld::Map>> m_maps;
     

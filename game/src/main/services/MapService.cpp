@@ -11,7 +11,6 @@ Copyright (c) 2023 Krzysztof Ambroziak
 
 #include "loader/Loader.hpp"
 #include "loader/Map.hpp"
-#include "loader/Sprite.hpp"
 
 MapService::MapService(MapModel* model) : m_mapModel(model) {}
 
@@ -19,13 +18,8 @@ void MapService::loadTileSheet(const QString& def, const QString& img) {
     m_tileSheet = ld::Loader::loadTiles(def, img);
 }
 
-void MapService::loadSpriteSheet(const QString& def,
-                                 const QString& img) {
-    const auto& sprites = ld::Loader::loadSprite(def, img);
-    
-    foreach(const auto& sprite, sprites) {
-        m_spriteSheets += std::make_shared<ld::Sprite>(sprite);
-    }
+void MapService::loadSpriteSheet(const QString& def, const QString& img) {
+    m_spriteSheets = ld::Loader::loadSprites(def, img);
 }
 
 void MapService::loadMap(const QString& filename) {

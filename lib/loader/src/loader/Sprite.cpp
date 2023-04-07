@@ -4,14 +4,6 @@ Copyright (c) 2023 Krzysztof Ambroziak
 
 #include "../../include/loader/Sprite.hpp"
 
-QString ld::Sprite::name() const {
-    return m_name;
-}
-
-void ld::Sprite::setName(const QString& name) {
-    m_name = name;
-}
-
 QPoint ld::Sprite::pivot() const {
     return m_pivot;
 }

@@ -5,7 +5,8 @@ Copyright (c) 2023 Krzysztof Ambroziak
 #ifndef LD_SPRITELOADER_HPP
 #define LD_SPRITELOADER_HPP
 
-#include <QImage>
+#include "../../include/loader/SpriteSheet.hpp"
+
 #include <QXmlStreamReader>
 
 namespace ld {
@@ -15,7 +16,7 @@ class SpriteLoader {
 private:
     struct SpriteDefinition {
         QString name;
-        int images;
+        int images = 0;
         QRect position;
         QPoint pivot;
     };
@@ -23,10 +24,10 @@ private:
 public:
     SpriteLoader(const QString& defFilename, const QImage& image);
     
-    QVector<Sprite> loadSprites();
+    SpriteSheet loadSprites();
 
 private:
-    QVector<Sprite> readSprites();
+    SpriteSheet readSprites();
     
     SpriteDefinition readSprite();
     

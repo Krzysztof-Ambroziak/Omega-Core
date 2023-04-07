@@ -14,15 +14,17 @@ private:
         QString name;
         Sprite sprite;
     };
-    
+
+private:
     static constexpr auto L_COMPARATOR = [](const auto& a, const auto& b) -> bool { return a.name < b.name; };
 
 public:
-    Sprite sprite(const QString& name) const;
-    
+    const Sprite& sprite(const QString& name) const;
     void addSprite(const Sprite& sprite,
                    const QString& name,
                    bool* repleace = nullptr);
+    
+    QStringList keys() const;
 
 private:
     QVector<NamedSprite> m_sprites;

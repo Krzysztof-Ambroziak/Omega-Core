@@ -10,18 +10,27 @@ Copyright (c) 2023 Krzysztof Ambroziak
 void ld::SpriteSheet::addSprite(const Sprite& sprite,
                                 const QString& name,
                                 bool* repleace) {
-    const NamedSprite newNamedSprite {name, sprite};
+    const NamedSprite namedSprite{name, sprite};
     const auto& it = std::lower_bound<>(m_sprites.begin(),
                                         m_sprites.end(),
-                                        newNamedSprite,
+                                        namedSprite,
                                         L_COMPARATOR);
     
     if(it < m_sprites.end() && name == it->name) {
-        it->sprite = newNamedSprite.sprite;
+        it->sprite = sprite;
         ld::setPVar<>(true, repleace);
     }
     else {
-        m_sprites.insert(it, newNamedSprite);
+        m_sprites.insert(it, namedSprite);
         ld::setPVar<>(false, repleace);
     }
+}
+
+QStringList ld::SpriteSheet::keys() const {
+    QStringList keys;
+    
+    for(const NamedSprite& namedSprite : m_sprites)
+        keys += namedSprite.name;
+    
+    return keys;
 }

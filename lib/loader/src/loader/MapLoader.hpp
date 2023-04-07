@@ -21,7 +21,7 @@ private:
     };
     
     struct RawTileEntity {
-        ld::Position position;
+        Position position;
         int multiplier = 1;
         QString name;
         

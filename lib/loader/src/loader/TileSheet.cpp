@@ -10,8 +10,7 @@ Copyright (c) 2023 Krzysztof Ambroziak
 ld::TileSheet::TileSheet() :
         m_tileType(ld::TileType::TILE_TYPE_UNKNOWN) {}
 
-ld::TileSheet::TileSheet(ld::TileType tileType,
-                         const QSize& tileSize) :
+ld::TileSheet::TileSheet(ld::TileType tileType, const QSize& tileSize) :
         m_tileType(tileType),
         m_tileSize(tileSize) {}
 
@@ -45,7 +44,9 @@ const QPixmap& ld::TileSheet::image(const QString& name) const {
     return emptyNamedImage.image;
 }
 
-void ld::TileSheet::addImage(const QPixmap& image, const QString& name, bool* repleace) {
+void ld::TileSheet::addImage(const QPixmap& image,
+                             const QString& name,
+                             bool* repleace) {
     const NamedImage& newNamedImage {image, name};
     const auto& it = std::lower_bound<>(m_images.begin(),
                                         m_images.end(),

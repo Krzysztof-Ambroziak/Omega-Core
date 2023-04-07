@@ -19,7 +19,7 @@ ld::TileSheet ld::Loader::loadTiles(const QString& sDef, const QString& sImg) {
     return TileLoader(def, img).loadTiles();
 }
 
-QVector<ld::Sprite> ld::Loader::loadSprite(const QString& sDef, const QString& sImg) {
+ld::SpriteSheet ld::Loader::loadSprites(const QString& sDef, const QString& sImg) {
     const QString& def = readFile(sDef);
     const QImage img(sImg);
     

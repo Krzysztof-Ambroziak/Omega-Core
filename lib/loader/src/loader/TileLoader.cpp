@@ -106,7 +106,7 @@ ld::TileSheet ld::TileLoader::readTiles(const TileHeader& header,
         if(!tileDef)
             continue;
         
-        QImage image = cutter.copy(tileDef.position, tileDef.color);
+        const QImage& image = cutter.copy(tileDef.position, tileDef.color);
         tileSheet.addImage(QPixmap::fromImage(image), tileDef.name);
     }
     
@@ -117,6 +117,7 @@ ld::TileLoader::TileDefinition ld::TileLoader::readTile() {
     QString tileName;
     ld::Position position;
     QColor color = Qt::black;
+    const QStringRef& tagName = m_reader.name();
     
     while(m_reader.readNextStartElement()) {
         const QStringRef& name = m_reader.name();
@@ -129,6 +130,7 @@ ld::TileLoader::TileDefinition ld::TileLoader::readTile() {
         if(name == TILE_ALTERNATIVE)
             color = readColor();
     }
+    exitTag(tagName, m_reader);
     
     return {tileName, position, color};
 }
