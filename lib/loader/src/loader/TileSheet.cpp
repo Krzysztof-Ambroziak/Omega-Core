@@ -47,7 +47,7 @@ const QPixmap& ld::TileSheet::image(const QString& name) const {
 void ld::TileSheet::addImage(const QPixmap& image,
                              const QString& name,
                              bool* repleace) {
-    const NamedImage& newNamedImage {image, name};
+    const NamedImage& newNamedImage {name, image};
     const auto& it = std::lower_bound<>(m_images.begin(),
                                         m_images.end(),
                                         newNamedImage,

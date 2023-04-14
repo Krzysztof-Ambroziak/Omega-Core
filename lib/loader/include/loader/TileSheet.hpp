@@ -21,8 +21,8 @@ public:
 
 private:
     struct NamedImage {
-        QPixmap image;
         QString name;
+        QPixmap image;
     };
     
     static constexpr auto L_COMPARATOR = [](const auto& a, const auto& b) -> bool { return a.name < b.name; };
@@ -32,7 +32,6 @@ public:
 
 public:
     TileSheet();
-    
     TileSheet(TileType tileType, const QSize& m_tileSize);
     
     TileType tileType() const;

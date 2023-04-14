@@ -6,9 +6,6 @@
             <rows>256</rows>
             <columns>256</columns>
         </map-size>
-        <namespaces>
-            <namespace>basic</namespace>
-        </namespaces>
     </header>
     <layers>
         <tile-layer>

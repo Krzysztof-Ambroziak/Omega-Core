@@ -5,22 +5,17 @@ Copyright (c) 2023 Krzysztof Ambroziak
 #include "../include/loader/Map.hpp"
 #include "utilities/PrivateHelpers.hpp"
 
-ld::Map::Map(const QString& name, const MapSize& size, const QStringList& tileNamespaces) :
-        m_name(name),
+ld::Map::Map(const MapSize& size) :
         m_size(size),
-        m_namespaces(tileNamespaces),
         m_tiles(size.columns * size.rows) {}
-
-QString ld::Map::name() const {
-    return m_name;
-}
 
 ld::MapSize ld::Map::size() const {
     return m_size;
 }
 
-QStringList ld::Map::tileNamespaces() const {
-    return m_namespaces;
+void ld::Map::setSize(const MapSize& size) {
+    m_size = size;
+    m_tiles.resize(m_size.rows * m_size.columns);
 }
 
 QString ld::Map::tile(const Position& position) const {
@@ -35,6 +30,25 @@ void ld::Map::addTile(const Position& position, const QString& tileName, bool* o
     }
     else
         ld::setPVar<>(false, ok);
+}
+
+bool ld::Map::operator==(const Map& map) const {
+    if(this == &map)
+        return true;
+    
+    const int tileSize = m_tiles.size();
+    const auto& mapTiles = map.m_tiles;
+    const auto& mapSize = map.m_size;
+    if(m_size.rows != mapSize.rows ||
+            m_size.columns != mapSize.columns ||
+            tileSize != mapTiles.size())
+        return false;
+    
+    for(int i = 0; i < tileSize; i++)
+        if(m_tiles[i] != mapTiles[i])
+            return false;
+    
+    return true;
 }
 
 int ld::Map::pos2ind(const Position& position) const {

@@ -2,8 +2,6 @@
 Copyright (c) 2023 Krzysztof Ambroziak
 */
 
-#include <memory>
-
 #include <QPixmap>
 
 #include "MapService.hpp"
@@ -23,16 +21,9 @@ void MapService::loadSpriteSheet(const QString& def, const QString& img) {
 }
 
 void MapService::loadMap(const QString& filename) {
-    const ld::Map& newMap = ld::Loader::loadMap(filename);
-    
-    if(!newMap.name().isEmpty()) {
-        const auto& map = std::make_shared<ld::Map>(newMap);
-        const auto& it = std::lower_bound(m_maps.begin(),
-                                          m_maps.end(),
-                                          map,
-                                          [](const auto& a, const auto& b) { return a->name() < b->name(); });
-        m_maps.insert(it, map);
-    }
+    QString name;
+    const ld::Map& map = ld::Loader::loadMap(filename, name);
+    m_mapSheet.addMap(map, name);
 }
 
 void MapService::changeMap(const QString& mapName) {
@@ -41,11 +32,11 @@ void MapService::changeMap(const QString& mapName) {
         QPixmap* image;
     };
     
-    const auto& map = findMap(mapName);
-    if(map == nullptr)
+    const auto& map = m_mapSheet.map(mapName);
+    if(map == ld::Map::NULL_MAP)
         return;
     
-    const ld::MapSize& mapSize = map->size();
+    const ld::MapSize& mapSize = map.size();
     QVector<NamedImage> images;
     
     m_mapModel->setMapSize(mapSize);
@@ -53,7 +44,7 @@ void MapService::changeMap(const QString& mapName) {
     for(int row = 0; row < mapSize.rows; row++)
         for(int column = 0; column < mapSize.columns; column++) {
             const ld::Position& pos{column, row};
-            const QString& name = map->tile(pos);
+            const QString& name = map.tile(pos);
             NamedImage image{name, nullptr};
             
             if(auto it = std::lower_bound(images.begin(),
@@ -67,16 +58,4 @@ void MapService::changeMap(const QString& mapName) {
             
             m_mapModel->addTile(pos, image.image);
         }
-}
-
-std::shared_ptr<ld::Map> MapService::findMap(const QString& mapName) const {
-    std::shared_ptr<ld::Map> map;
-    
-    foreach(const auto& m, m_maps)
-        if(mapName == m->name()) {
-            map = m;
-            break;
-        }
-    
-    return map;
 }

@@ -5,7 +5,7 @@ Copyright (c) 2023 Krzysztof Ambroziak
 #include "MapModel.hpp"
 
 const QPixmap* MapModel::tile(const ld::Position& position) const {
-    return m_tiles[position.row * m_mapSize.columns + position.column];
+    return m_tiles[index(position)];
 }
 
 void MapModel::addTile(const ld::Position& position, const QPixmap* const image) {

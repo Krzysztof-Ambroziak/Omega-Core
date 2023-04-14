@@ -17,7 +17,6 @@ private:
     struct MapHeader {
         QString name;
         MapSize size;
-        QStringList namespaces;
     };
     
     struct RawTileEntity {
@@ -39,14 +38,12 @@ private:
 public:
     MapLoader(const QString& mapFile);
     
-    Map loadMap();
+    Map loadMap(QString& name);
 
 private:
     MapHeader readHeader();
     
     MapSize readMapSize();
-    
-    QStringList readTileNamespaces();
     
     Map readLayers(const MapHeader& header);
     

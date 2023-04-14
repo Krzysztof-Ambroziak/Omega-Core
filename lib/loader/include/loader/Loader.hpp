@@ -23,7 +23,7 @@ public:
     static SpriteSheet loadSprites(const QString& definitionFilename,
                                    const QString& imageFilename);
     
-    static Map loadMap(const QString& definitionFilename);
+    static Map loadMap(const QString& definitionFilename, QString& mapName);
 
 public:
     Loader() = delete;

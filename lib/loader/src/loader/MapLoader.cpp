@@ -4,6 +4,7 @@ Copyright (c) 2023 Krzysztof Ambroziak
 
 #include "MapLoader.hpp"
 #include "loader/Map.hpp"
+#include "utilities/PrivateHelpers.hpp"
 
 void ld::MapLoader::copyRawTilesToMap(Map& target,
                                       const RawTileEntity& tileEntity) {
@@ -21,7 +22,7 @@ void ld::MapLoader::copyRawTilesToMap(Map& target,
 
 ld::MapLoader::MapLoader(const QString& mapFile) : m_reader(mapFile) {}
 
-ld::Map ld::MapLoader::loadMap() {
+ld::Map ld::MapLoader::loadMap(QString& name) {
     static const ld::Map& S_NULL_MAP = ld::Map::NULL_MAP;
     
     if(!m_reader.readNextStartElement() || m_reader.name() != ROOT)
@@ -34,13 +35,18 @@ ld::Map ld::MapLoader::loadMap() {
     if(header.size.rows != header.size.columns)
         return S_NULL_MAP;
     
+    if(!m_reader.readNextStartElement() || m_reader.name() != LAYERS)
+        return S_NULL_MAP;
+    
     ld::Map map = readLayers(header);
+    name = header.name;
     
     return map;
 }
 
 ld::MapLoader::MapHeader ld::MapLoader::readHeader() {
     MapHeader header;
+    const QStringRef& tagName = m_reader.name();
     
     while(m_reader.readNextStartElement()) {
         const QStringRef& name = m_reader.name();
@@ -50,9 +56,8 @@ ld::MapLoader::MapHeader ld::MapLoader::readHeader() {
                                   .trimmed();
         if(name == HEADER_MAP_SIZE)
             header.size = readMapSize();
-        if(name == HEADER_NAMESPACES)
-            header.namespaces = readTileNamespaces();
     }
+    exitTag(tagName, m_reader);
     
     return header;
 }
@@ -75,25 +80,10 @@ ld::MapSize ld::MapLoader::readMapSize() {
     return size;
 }
 
-QStringList ld::MapLoader::readTileNamespaces() {
-    QStringList namespaces;
-    
-    while(m_reader.readNextStartElement()) {
-        if(m_reader.name() == HEADER_TILE_NAMESPACE)
-            if(const QString& tileNamespace =
-                    m_reader.readElementText(QXmlStreamReader::SkipChildElements)
-                    .trimmed() ; !tileNamespace.isEmpty())
-                namespaces += tileNamespace;
-    }
-    
-    return namespaces;
-}
-
 ld::Map ld::MapLoader::readLayers(const MapHeader& header) {
-    if(!m_reader.readNextStartElement() || m_reader.name() != LAYERS)
-        return ld::Map::NULL_MAP;
+    Map map(header.size);
+    const QStringRef& tagName = m_reader.name();
     
-    Map map(header.name, header.size, header.namespaces);
     while(m_reader.readNextStartElement()) {
         const QStringRef& name = m_reader.name();
         
@@ -104,6 +94,7 @@ ld::Map ld::MapLoader::readLayers(const MapHeader& header) {
         if(name == OBJECT_LAYER)
             m_reader.skipCurrentElement();
     }
+    exitTag(tagName, m_reader);
     
     return map;
 }

@@ -14,8 +14,7 @@ private:
         QString name;
         Sprite sprite;
     };
-
-private:
+    
     static constexpr auto L_COMPARATOR = [](const auto& a, const auto& b) -> bool { return a.name < b.name; };
 
 public:

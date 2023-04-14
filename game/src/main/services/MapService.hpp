@@ -7,20 +7,11 @@ Copyright (c) 2023 Krzysztof Ambroziak
 
 #include <QVector>
 
+#include "loader/MapSheet.hpp"
 #include "loader/SpriteSheet.hpp"
 #include "loader/TileSheet.hpp"
 
-namespace ld {
-class Map;
-}  // namespace ld
-
-namespace std {
-template<class T>
-class shared_ptr;
-}  // namespace std
-
 class MapModel;
-class QPixmap;
 
 class MapService {
 public:
@@ -37,14 +28,11 @@ public:
     void changeMap(const QString& mapName);
 
 private:
-    std::shared_ptr<ld::Map> findMap(const QString& mapName) const;
-
-private:
     ld::TileSheet m_tileSheet;
     
     ld::SpriteSheet m_spriteSheets;
     
-    QVector<std::shared_ptr<ld::Map>> m_maps;
+    ld::MapSheet m_mapSheet;
     
     MapModel* const m_mapModel;
 };

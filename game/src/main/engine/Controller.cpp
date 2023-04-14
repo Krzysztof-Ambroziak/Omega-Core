@@ -19,6 +19,8 @@ Controller::Controller(Window* const window, MapModel* const mapModel) :
 void Controller::init() {
     m_mapService->loadTileSheet(":/tiles/xml/background-tile.xml",
                                 ":/tiles/images/background-tile.png");
+    m_mapService->loadSpriteSheet(":/sprites/xml/sprites.xml",
+                                  ":/sprites/images/sprites.png");
     m_mapService->loadMap(":/maps/start-map.xml");
     
     m_mapService->changeMap("start");

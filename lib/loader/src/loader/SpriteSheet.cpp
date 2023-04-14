@@ -7,9 +7,21 @@ Copyright (c) 2023 Krzysztof Ambroziak
 #include "../../include/loader/SpriteSheet.hpp"
 #include "utilities/PrivateHelpers.hpp"
 
-void ld::SpriteSheet::addSprite(const Sprite& sprite,
-                                const QString& name,
-                                bool* repleace) {
+const ld::Sprite& ld::SpriteSheet::sprite(const QString& name) const {
+    static NamedSprite emptyNamedSprite;
+    emptyNamedSprite.name = name;
+    const auto& it = std::lower_bound<>(m_sprites.cbegin(),
+                                        m_sprites.cend(),
+                                        emptyNamedSprite,
+                                        L_COMPARATOR);
+    
+    if(it < m_sprites.cend() && name == it->name)
+        return it->sprite;
+    
+    return emptyNamedSprite.sprite;
+}
+
+void ld::SpriteSheet::addSprite(const Sprite& sprite, const QString& name, bool* repleace) {
     const NamedSprite namedSprite{name, sprite};
     const auto& it = std::lower_bound<>(m_sprites.begin(),
                                         m_sprites.end(),

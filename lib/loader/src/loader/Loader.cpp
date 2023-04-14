@@ -26,10 +26,10 @@ ld::SpriteSheet ld::Loader::loadSprites(const QString& sDef, const QString& sImg
     return SpriteLoader(def, img).loadSprites();
 }
 
-ld::Map ld::Loader::loadMap(const QString& sDef) {
+ld::Map ld::Loader::loadMap(const QString& sDef, QString& mapName) {
     const QString& def = readFile(sDef);
     
-    return MapLoader(def).loadMap();
+    return MapLoader(def).loadMap(mapName);
 }
 
 QByteArray ld::Loader::readFile(const QString& filename) {
