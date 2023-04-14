@@ -7,6 +7,22 @@ Copyright (c) 2023 Krzysztof Ambroziak
 #include "../../include/loader/TileSheet.hpp"
 #include "utilities/PrivateHelpers.hpp"
 
+QVector<ld::TileSheet::NamedImage>::const_iterator ld::TileSheet::nextValue(QVector<NamedImage>::const_iterator begin,
+                                                                            QVector<NamedImage>::const_iterator end) {
+    if(begin < end) {
+        const QString& name = begin->name;
+        while(begin < end && begin->name == name)
+            begin++;
+    }
+    
+    return begin;
+}
+
+QVector<ld::TileSheet::NamedImage> ld::TileSheet::same(QVector<NamedImage>::const_iterator begin,
+                                                       QVector<NamedImage>::const_iterator end) {
+    return QVector<NamedImage>(begin, nextValue(begin, end));
+}
+
 ld::TileSheet::TileSheet() :
         m_tileType(ld::TileType::TILE_TYPE_UNKNOWN) {}
 
@@ -70,4 +86,61 @@ QStringList ld::TileSheet::keys() const {
         keys += image.name;
     
     return keys;
+}
+
+ld::TileSheet& ld::TileSheet::merge(const TileSheet& tileSheet, MergeMethod method) {
+    const auto& newTiles = tileSheet.m_images;
+    
+    if(newTiles.isEmpty())
+        return *this;
+    if(m_images.isEmpty()) {
+        m_images.append(newTiles);
+        return *this;
+    }
+    
+    const QVector<NamedImage> ownTiles(m_images);
+    m_images.clear();
+    m_images.reserve(ownTiles.size() + newTiles.size());
+    auto itOwnB = ownTiles.cbegin();
+    auto itNewB = newTiles.cbegin();
+    const auto itOwnE = ownTiles.cend();
+    const auto itNewE = newTiles.cend();
+    
+    while(true) {
+        const QString& ownTileName = itOwnB->name;
+        const QString& newTileName = itNewB->name;
+        
+        if(itOwnB->name < itNewB->name)
+            m_images.append(*itOwnB++);
+        else if(itNewB->name < itOwnB->name)
+            m_images.append(*itNewB++);
+        else
+            switch(method) {
+            case ADD:
+                m_images.append(same(itOwnB, itOwnE));
+                itOwnB = nextValue(itOwnB, itOwnE);
+                break;
+            case IGNORE:
+                m_images.append(same(itOwnB, itOwnE));
+                itOwnB = nextValue(itOwnB, itOwnE);
+                itNewB = nextValue(itNewB, itNewE);
+                break;
+            case OVERRIDE:
+                m_images.append(same(itNewB, itNewE));
+                itOwnB = nextValue(itOwnB, itOwnE);
+                itNewB = nextValue(itNewB, itNewE);
+                break;
+            }
+        
+        if(itOwnB == itOwnE) {
+            m_images.append({itNewB, itNewE});
+            break;
+        }
+        if(itNewB == itNewE) {
+            m_images.append({itOwnB, itOwnE});
+            break;
+        }
+    }
+    
+    return *this;
 }

@@ -26,6 +26,12 @@ private:
     };
     
     static constexpr auto L_COMPARATOR = [](const auto& a, const auto& b) -> bool { return a.name < b.name; };
+    
+    static QVector<NamedImage>::const_iterator nextValue(QVector<NamedImage>::const_iterator begin,
+                                                             QVector<NamedImage>::const_iterator end);
+    
+    static QVector<NamedImage> same(QVector<NamedImage>::const_iterator begin,
+                                    QVector<NamedImage>::const_iterator end);
 
 public:
     static const TileSheet NULL_TILESHEET;
@@ -46,6 +52,8 @@ public:
                   bool* repleace = nullptr);
     
     QStringList keys() const;
+    
+    TileSheet& merge(const TileSheet& tileSheet, MergeMethod method);
 
 private:
     TileType m_tileType;
