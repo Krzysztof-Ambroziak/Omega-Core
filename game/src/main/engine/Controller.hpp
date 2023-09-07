@@ -9,7 +9,8 @@ Copyright (c) 2023 Krzysztof Ambroziak
 
 class MapModel;
 class MapService;
-class IsometricTileRenderer;
+class TileRenderer;
+class TileRenderingService;
 class Window;
 
 class Controller {
@@ -25,7 +26,9 @@ private:
     
     MapService* const m_mapService;
     
-    IsometricTileRenderer* const m_renderer;
+    TileRenderer* const m_renderer;
+    
+    TileRenderingService* const m_tileRenderingService;
     
     Window* const m_window;
 };

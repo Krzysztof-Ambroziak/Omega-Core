@@ -9218,6 +9218,21 @@
             </tile>
         </tile-layer>
         <sprite-layer/>
-        <object-layer/>
+        <object-layer>
+            <object>
+                <id>97fd9815-3d2c-4b93-a30c-a9c46c652528</id>
+                <geometry type="point">
+                    <row offset="center">40</row>
+                    <col offset="center">20></col>
+                    <z-index>0</z-index>
+                </geometry>
+                <properties>
+                    <property>
+                        <key>type</key>
+                        <value>starting-point</value>
+                    </property>
+                </properties>
+            </object>
+        </object-layer>
     </layers>
 </map>

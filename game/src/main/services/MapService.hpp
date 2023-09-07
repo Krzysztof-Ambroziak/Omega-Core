@@ -26,6 +26,8 @@ public:
     void loadMap(const QString& definitionFilename);
     
     void changeMap(const QString& mapName);
+    
+    ld::MapSize mapSize() const;
 
 private:
     ld::TileSheet m_tileSheet;

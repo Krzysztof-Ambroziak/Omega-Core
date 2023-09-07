@@ -32,11 +32,13 @@ target_sources(OC-game
     PRIVATE ${main}/${models}/MapModel.cpp
     PRIVATE ${main}/${models}/${interface}/IMapModel.hpp
     PRIVATE ${main}/${renderers}/NullRenderer.hpp
-    PRIVATE ${main}/${renderers}/IsometricTileRenderer.hpp
-    PRIVATE ${main}/${renderers}/IsometricTileRenderer.cpp
+    PRIVATE ${main}/${renderers}/TileRenderer.hpp
+    PRIVATE ${main}/${renderers}/TileRenderer.cpp
     PRIVATE ${main}/${renderers}/${interface}/IRenderer.hpp
     PRIVATE ${main}/${services}/MapService.hpp
     PRIVATE ${main}/${services}/MapService.cpp
+    PRIVATE ${main}/${services}/TileRenderingService.hpp
+    PRIVATE ${main}/${services}/TileRenderingService.cpp
     PRIVATE ${RESOURCES}
 )
 

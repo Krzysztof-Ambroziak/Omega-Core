@@ -56,6 +56,10 @@ void MapService::changeMap(const QString& mapName) {
             else
                 image.image = new QPixmap(m_tileSheet.image(image.name));
             
-            m_mapModel->addTile(pos, image.image);
+            m_mapModel->addTile(pos, *image.image);
         }
+}
+
+ld::MapSize MapService::mapSize() const {
+    return m_mapModel->mapSize();
 }

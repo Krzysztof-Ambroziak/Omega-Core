@@ -92,7 +92,7 @@ ld::Map ld::MapLoader::readLayers(const MapHeader& header) {
         if(name == SPRITE_LAYER)
             m_reader.skipCurrentElement();
         if(name == OBJECT_LAYER)
-            m_reader.skipCurrentElement();
+            readObjects();
     }
     exitTag(tagName, m_reader);
     
@@ -108,10 +108,6 @@ void ld::MapLoader::readTiles(Map& map) {
         copyRawTilesToMap(map, entity);
     };
 }
-
-//void ld::MapLoader::readSprites() {}
-
-//void ld::MapLoader::readObjects() {}
 
 ld::MapLoader::RawTileEntity ld::MapLoader::readRawTileEntity() {
     ld::MapLoader::RawTileEntity entity;
@@ -132,4 +128,10 @@ ld::MapLoader::RawTileEntity ld::MapLoader::readRawTileEntity() {
     }
     
     return entity;
+}
+
+void ld::MapLoader::readObjects() {
+    while(m_reader.readNextStartElement() && m_reader.name() == OBJECT_LAYER_ENTITY) {
+        ;
+    }
 }

@@ -6,21 +6,19 @@ Copyright (c) 2023 Krzysztof Ambroziak
 #define IMAPMODEL_HPP
 
 #include "Commons.hpp"
+#include <QVector>
 
 class QPixmap;
+class QPoint;
+class QSize;
 
 class IMapModel {
 public:
-    virtual const QPixmap* tile(const ld::Position& position) const = 0;
+    virtual const QPixmap& tile(const ld::Position& position) const = 0;
     
-    ld::MapSize mapSize() const;
-
-protected:
-    ld::MapSize m_mapSize;
+    virtual QPoint originPoint() const = 0;
+    
+    virtual QSize tileHalfSize() const  = 0;
 };
-
-inline ld::MapSize IMapModel::mapSize() const {
-    return m_mapSize;
-}
 
 #endif  // IMAPMODEL_HPP

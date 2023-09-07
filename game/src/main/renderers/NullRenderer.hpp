@@ -15,8 +15,6 @@ public:
     NullRenderer(const NullRenderer& renderer) = delete;
     
     void render(QPainter& /*painter*/) override {}
-    
-    oc::RendererType type() const override;
 
 private:
     NullRenderer() = default;
@@ -25,10 +23,6 @@ private:
 inline NullRenderer& NullRenderer::instance() {
     static NullRenderer renderer;
     return renderer;
-}
-
-oc::RendererType NullRenderer::type() const {
-    return oc::NULL_RENDERER;
 }
 
 #endif  // NULLRENDERER_HPP

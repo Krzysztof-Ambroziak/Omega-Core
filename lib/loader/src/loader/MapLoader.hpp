@@ -49,9 +49,7 @@ private:
     
     void readTiles(Map& map);
     
-//    void readSprites();
-    
-//    void readObjects();
+    void readObjects();
     
     RawTileEntity readRawTileEntity();
 
@@ -76,6 +74,7 @@ private:
     inline static const QString TILE_ENTITY_COLUMN = "col";
     inline static const QString TILE_ENTITY_MULTIPLIER = "multiplier";
     inline static const QString TILE_ENTITY_TILE_NAME = "name";
+    inline static const QString OBJECT_LAYER_ENTITY = "object";
 };
 }  // namespace ld
 
