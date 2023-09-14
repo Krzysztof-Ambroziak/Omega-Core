@@ -30,7 +30,10 @@ target_sources(OC-game
     PRIVATE ${main}/${gui}/Window.cpp
     PRIVATE ${main}/${models}/MapModel.hpp
     PRIVATE ${main}/${models}/MapModel.cpp
+    PRIVATE ${main}/${models}/ScreenModel.hpp
+    PRIVATE ${main}/${models}/ScreenModel.cpp
     PRIVATE ${main}/${models}/${interface}/IMapModel.hpp
+    PRIVATE ${main}/${models}/${interface}/IScreenModel.hpp
     PRIVATE ${main}/${renderers}/NullRenderer.hpp
     PRIVATE ${main}/${renderers}/TileRenderer.hpp
     PRIVATE ${main}/${renderers}/TileRenderer.cpp

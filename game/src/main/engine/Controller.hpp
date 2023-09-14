@@ -9,19 +9,22 @@ Copyright (c) 2023 Krzysztof Ambroziak
 
 class MapModel;
 class MapService;
+class ScreenModel;
 class TileRenderer;
 class TileRenderingService;
 class Window;
 
 class Controller {
 public:
-    Controller(Window* widget, MapModel* mapModel);
+    Controller(Window* widget, MapModel* mapModel, ScreenModel* screenModel);
     
     void init();
     
     void start();
 
 private:
+    Window* const m_window;
+    
     Timer m_timer;
     
     MapService* const m_mapService;
@@ -29,8 +32,6 @@ private:
     TileRenderer* const m_renderer;
     
     TileRenderingService* const m_tileRenderingService;
-    
-    Window* const m_window;
 };
 
 #endif  // CONTROLLER_HPP
