@@ -3,7 +3,6 @@ Copyright (c) 2023 Krzysztof Ambroziak
 */
 
 #include "TileLoader.hpp"
-#include "../../include/loader/TileSheet.hpp"
 #include "utilities/IsometricTileCutter.hpp"
 #include "utilities/NullTileCutter.hpp"
 #include "utilities/SquaredTileCutter.hpp"
@@ -13,22 +12,29 @@ ld::TileLoader::TileLoader(const QString& def, const QImage& image) :
         m_reader(def),
         m_image(image) {}
 
-ld::TileSheet ld::TileLoader::loadTiles() {
-    static const ld::TileSheet& S_NULL_TILESHEET = ld::TileSheet::NULL_TILESHEET;
+QVector<ld::Tile> ld::TileLoader::loadTiles() {
+    static const QVector<ld::Tile> EMPTY_CONTAINER;
     
     if(!m_reader.readNextStartElement() || m_reader.name() != ROOT)
-        return S_NULL_TILESHEET;
+        return EMPTY_CONTAINER;
     
     if(!m_reader.readNextStartElement() || m_reader.name() != HEADER)
-        return S_NULL_TILESHEET;
-    
+        return EMPTY_CONTAINER;
     const TileHeader& header = readHeader();
     
     if(!m_reader.readNextStartElement() || m_reader.name() != TILES)
-        return S_NULL_TILESHEET;
+        return EMPTY_CONTAINER;
     
     const ld::ITileCutter& cutter = imageCutter(header);
-    return readTiles(header, cutter);
+    const auto& tileDefinitions = readTiles();
+    
+    QVector<ld::Tile> tiles;
+    foreach (const auto& tileDef, tileDefinitions) {
+        const auto& image = cutter.copy(tileDef.position, tileDef.color);
+        tiles.push_back({tileDef.name, QPixmap::fromImage(image)});
+    }
+    
+    return tiles;
 }
 
 ld::TileLoader::TileHeader ld::TileLoader::readHeader() {
@@ -96,21 +102,18 @@ QSize ld::TileLoader::readTileSize() {
     return {width, height};
 }
 
-ld::TileSheet ld::TileLoader::readTiles(const TileHeader& header,
-                                        const ITileCutter& cutter) {
-    ld::TileSheet tileSheet(header.type, header.size);
+QVector<ld::TileLoader::TileDefinition> ld::TileLoader::readTiles() {
+    QVector<TileDefinition> tiles;
     
     while(m_reader.readNextStartElement() && m_reader.name() == TILES_TILE_ENTITY) {
         const TileDefinition& tileDef = readTile();
         
         if(!tileDef)
             continue;
-        
-        const QImage& image = cutter.copy(tileDef.position, tileDef.color);
-        tileSheet.addImage(QPixmap::fromImage(image), tileDef.name);
+        tiles += tileDef;
     }
     
-    return tileSheet;
+    return tiles;
 }
 
 ld::TileLoader::TileDefinition ld::TileLoader::readTile() {

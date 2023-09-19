@@ -5,25 +5,25 @@ Copyright (c) 2023 Krzysztof Ambroziak
 #ifndef LD_LOADER_HPP
 #define LD_LOADER_HPP
 
-//#include "Sprite.hpp"
-
-class QString;
 class QByteArray;
+class QString;
+template<class T>
+class QVector;
 
 namespace ld {
 class Map;
-class TileSheet;
+struct Tile;
 class SpriteSheet;
 
 class Loader {
 public:
-    static TileSheet loadTiles(const QString& definitionFilename,
-                               const QString& imageFilename);
+    static QVector<ld::Tile> loadTiles(const QString& definitionFilename,
+                                       const QString& imageFilename);
     
     static SpriteSheet loadSprites(const QString& definitionFilename,
                                    const QString& imageFilename);
     
-    static Map loadMap(const QString& definitionFilename, QString& mapName);
+    static Map loadMap(const QString& definitionFilename);
 
 public:
     Loader() = delete;

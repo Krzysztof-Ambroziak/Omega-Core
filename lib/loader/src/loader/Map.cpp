@@ -5,9 +5,18 @@ Copyright (c) 2023 Krzysztof Ambroziak
 #include "../include/loader/Map.hpp"
 #include "utilities/PrivateHelpers.hpp"
 
-ld::Map::Map(const MapSize& size) :
+ld::Map::Map(const QString& name, const MapSize& size) :
+        m_name(name),
         m_size(size),
         m_tiles(size.columns * size.rows) {}
+
+QString ld::Map::name() const {
+    return m_name;
+}
+
+void ld::Map::setName(const QString& name) {
+    m_name = name;
+}
 
 ld::MapSize ld::Map::size() const {
     return m_size;
@@ -49,6 +58,10 @@ bool ld::Map::operator==(const Map& map) const {
             return false;
     
     return true;
+}
+
+bool ld::Map::operator!=(const Map& map) const {
+    return !(*this == (map));
 }
 
 int ld::Map::pos2ind(const Position& position) const {

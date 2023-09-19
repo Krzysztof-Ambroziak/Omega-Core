@@ -28,6 +28,8 @@ target_sources(OC-game
     PRIVATE ${main}/${engine}/Timer.cpp
     PRIVATE ${main}/${gui}/Window.hpp
     PRIVATE ${main}/${gui}/Window.cpp
+    PRIVATE ${main}/${models}/AssetsModel.hpp
+    PRIVATE ${main}/${models}/AssetsModel.cpp
     PRIVATE ${main}/${models}/MapModel.hpp
     PRIVATE ${main}/${models}/MapModel.cpp
     PRIVATE ${main}/${models}/ScreenModel.hpp

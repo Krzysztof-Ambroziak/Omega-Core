@@ -26,9 +26,9 @@ private:
     };
     
     struct TileDefinition {
-        const QString name;
-        const Position position;
-        const QColor color;
+        QString name;
+        Position position;
+        QColor color;
         
         operator bool() const {
             return !name.isEmpty() && position.row >= 0 && position.column >= 0;
@@ -38,7 +38,7 @@ private:
 public:
     TileLoader(const QString& defFilename, const QImage& image);
     
-    TileSheet loadTiles();
+    QVector<Tile> loadTiles();
 
 private:
     TileHeader readHeader();
@@ -49,7 +49,7 @@ private:
     
     QSize readTileSize();
     
-    TileSheet readTiles(const TileHeader& header, const ITileCutter& cutter);
+    QVector<TileDefinition> readTiles();
     
     TileDefinition readTile();
     

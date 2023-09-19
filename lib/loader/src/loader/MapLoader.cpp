@@ -22,7 +22,7 @@ void ld::MapLoader::copyRawTilesToMap(Map& target,
 
 ld::MapLoader::MapLoader(const QString& mapFile) : m_reader(mapFile) {}
 
-ld::Map ld::MapLoader::loadMap(QString& name) {
+ld::Map ld::MapLoader::loadMap() {
     static const ld::Map& S_NULL_MAP = ld::Map::NULL_MAP;
     
     if(!m_reader.readNextStartElement() || m_reader.name() != ROOT)
@@ -39,7 +39,6 @@ ld::Map ld::MapLoader::loadMap(QString& name) {
         return S_NULL_MAP;
     
     ld::Map map = readLayers(header);
-    name = header.name;
     
     return map;
 }
@@ -81,7 +80,7 @@ ld::MapSize ld::MapLoader::readMapSize() {
 }
 
 ld::Map ld::MapLoader::readLayers(const MapHeader& header) {
-    Map map(header.size);
+    Map map(header.name, header.size);
     const QStringRef& tagName = m_reader.name();
     
     while(m_reader.readNextStartElement()) {

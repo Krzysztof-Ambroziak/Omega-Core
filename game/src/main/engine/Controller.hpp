@@ -7,6 +7,7 @@ Copyright (c) 2023 Krzysztof Ambroziak
 
 #include "Timer.hpp"
 
+class AssetsModel;
 class MapModel;
 class MapService;
 class ScreenModel;
@@ -16,7 +17,7 @@ class Window;
 
 class Controller {
 public:
-    Controller(Window* widget, MapModel* mapModel, ScreenModel* screenModel);
+    Controller(Window* widget, AssetsModel* assetsModel, MapModel* mapModel, ScreenModel* screenModel);
     
     void init();
     

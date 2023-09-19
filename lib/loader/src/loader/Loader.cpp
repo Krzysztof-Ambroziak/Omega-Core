@@ -7,12 +7,11 @@ Copyright (c) 2023 Krzysztof Ambroziak
 
 #include "../../include/loader/Loader.hpp"
 #include "../../include/loader/Map.hpp"
-#include "../../include/loader/TileSheet.hpp"
 #include "MapLoader.hpp"
 #include "SpriteLoader.hpp"
 #include "TileLoader.hpp"
 
-ld::TileSheet ld::Loader::loadTiles(const QString& sDef, const QString& sImg) {
+QVector<ld::Tile> ld::Loader::loadTiles(const QString& sDef, const QString& sImg) {
     const QString& def = readFile(sDef);
     const QImage img(sImg);
     
@@ -26,10 +25,10 @@ ld::SpriteSheet ld::Loader::loadSprites(const QString& sDef, const QString& sImg
     return SpriteLoader(def, img).loadSprites();
 }
 
-ld::Map ld::Loader::loadMap(const QString& sDef, QString& mapName) {
+ld::Map ld::Loader::loadMap(const QString& sDef) {
     const QString& def = readFile(sDef);
     
-    return MapLoader(def).loadMap(mapName);
+    return MapLoader(def).loadMap();
 }
 
 QByteArray ld::Loader::readFile(const QString& filename) {

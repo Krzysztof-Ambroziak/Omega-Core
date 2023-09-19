@@ -38,7 +38,7 @@ private:
 public:
     MapLoader(const QString& mapFile);
     
-    Map loadMap(QString& name);
+    Map loadMap();
 
 private:
     MapHeader readHeader();
