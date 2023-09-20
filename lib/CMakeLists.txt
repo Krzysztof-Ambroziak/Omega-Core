@@ -1,7 +1,7 @@
 find_package(Qt5 COMPONENTS Gui REQUIRED)
 
 cmake_minimum_required(VERSION 3.11)
-project(Loader-Library
+project(OmegaCore_Library
     VERSION 1.0.0
     DESCRIPTION "Maps and tiles loader library"
 )
@@ -43,4 +43,16 @@ target_include_directories(Loader
 
 target_link_libraries(Loader
     PRIVATE Qt5::Gui
+)
+
+####################################
+add_library(Observer INTERFACE)
+
+target_sources(Observer
+    INTERFACE "${CMAKE_CURRENT_SOURCE_DIR}/dp/include/Observable.hpp"
+    INTERFACE "${CMAKE_CURRENT_SOURCE_DIR}/dp/include/Observer.hpp"
+)
+
+target_include_directories(Observer
+    INTERFACE ${CMAKE_CURRENT_SOURCE_DIR}/dp/include
 )
