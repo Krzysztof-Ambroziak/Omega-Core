@@ -10,10 +10,7 @@ Copyright (c) 2023 Krzysztof Ambroziak
 namespace oc {
 enum DirectionOfRotation { DOR_CLOCKWISE, DOR_COUNTERCLOCKWISE };
 
-
-enum RendererType { NULL_RENDERER, TILE_RENDERER };
-
-enum Rotation { ROTATION_0_DEG, ROTATION_90_DEG, ROTATION_180_DEG, ROTATION_270_DEG, UNDEFINED_ROTATION };
+enum Rotation { UNDEFINED_ROTATION, ROTATION_0_DEG, ROTATION_90_DEG, ROTATION_180_DEG, ROTATION_270_DEG };
 
 struct Offset {
     int xOffset;

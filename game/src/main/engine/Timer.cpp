@@ -3,13 +3,15 @@ Copyright (c) 2023 Krzysztof Ambroziak
 */
 
 #include "Timer.hpp"
+#include "../services/api/IUpdateService.hpp"
 
 #include <QDateTime>
 #include <QWidget>
 
-Timer::Timer(QWidget* widget, int ups, QObject* parent) :
+Timer::Timer(QWidget* widget, IUpdateService* updateService, int ups, QObject* parent) :
         QObject(parent),
         m_widget(widget),
+        m_updateService(updateService),
         c_dt(1000000 / ups) {
     QObject::connect(&timer, &QTimer::timeout, this, &Timer::tick);
 }
@@ -34,7 +36,7 @@ void Timer::tick() {
     prev = curr;
     
     while(delta >= c_dt) {
-        // update state;
+        m_updateService->update(c_dt);
         delta -= c_dt;
     }
     

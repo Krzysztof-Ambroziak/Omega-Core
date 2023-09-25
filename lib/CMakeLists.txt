@@ -1,12 +1,17 @@
 find_package(Qt5 COMPONENTS Gui REQUIRED)
 
 cmake_minimum_required(VERSION 3.11)
+
 project(OmegaCore_Library
     VERSION 1.0.0
     DESCRIPTION "Maps and tiles loader library"
 )
 
 add_library(Loader SHARED)
+
+target_compile_features(Loader
+    PRIVATE cxx_std_17
+)
 
 target_sources(Loader
     PRIVATE "loader/src/loader/Definitions.hpp"

@@ -8,10 +8,11 @@ Copyright (c) 2023 Krzysztof Ambroziak
 #include <QTimer>
 
 class QWidget;
+class IUpdateService;
 
 class Timer : public QObject {
 public:
-    Timer(QWidget* widget, int ups, QObject* parent = nullptr);
+    Timer(QWidget* widget, IUpdateService* updateService, int ups, QObject* parent = nullptr);
     
     void start();
     
@@ -22,6 +23,8 @@ private slots:
 
 private:
     QWidget* const m_widget;
+    
+    IUpdateService* const m_updateService;
     
     const int c_dt;
     
